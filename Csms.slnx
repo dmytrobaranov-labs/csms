@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Csms.Domain/Csms.Domain.csproj" />
+    <Project Path="src/Csms.Emulator/Csms.Emulator.csproj" />
+    <Project Path="src/Csms.Host/Csms.Host.csproj" />
+    <Project Path="src/Csms.Infrastructure/Csms.Infrastructure.csproj" />
+    <Project Path="src/Csms.Ocpp/Csms.Ocpp.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Csms.Host.IntegrationTests/Csms.Host.IntegrationTests.csproj" />
+    <Project Path="tests/Csms.Ocpp.Tests/Csms.Ocpp.Tests.csproj" />
+  </Folder>
+</Solution>
