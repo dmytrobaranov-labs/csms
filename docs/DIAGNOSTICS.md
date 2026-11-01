@@ -25,6 +25,38 @@ to change it, run `docker compose down -v` (this deletes the Seq and PostgreSQL 
 
 Jaeger keeps traces in memory, so they are gone after `docker compose restart jaeger`.
 
+## Health checks
+
+`Csms.Host` reads the PostgreSQL connection string from `ConnectionStrings:Postgres`.
+It never comes from `appsettings.json`. Without it, the host refuses to start.
+`.env` only configures docker-compose, so the app needs its own copy. Use the port from `.env`:
+
+```sh
+dotnet user-secrets set "ConnectionStrings:Postgres" \
+  "Host=localhost;Port=5432;Database=csms;Username=csms;Password=csms_dev" --project src/Csms.Host
+# or, for one shell session:
+export ConnectionStrings__Postgres="Host=localhost;Port=5432;..."
+```
+
+User-secrets are loaded only in the `Development` environment (the default `dotnet run` profile).
+
+| Endpoint | Checks | Use it as |
+|---|---|---|
+| `/health/live` | nothing: the process answers HTTP | liveness probe (restart if it fails) |
+| `/health/ready` | PostgreSQL (`SELECT 1`, 5 s timeout) | readiness probe (stop routing traffic if it fails) |
+| `/health` | same as `/health/ready` | alias for humans and simple monitors |
+
+Responses are plain text: `Healthy` (200) or `Unhealthy` (503). Failure details never go into the
+response. They go to the log as an error from `DefaultHealthCheckService` (event id 103), with the check name and exception.
+
+```sh
+curl -i http://localhost:5104/health/ready
+docker compose stop postgres     # ready -> 503 Unhealthy, live stays 200 Healthy
+docker compose start postgres
+```
+
+See [Health checks in ASP.NET Core](https://learn.microsoft.com/aspnet/core/host-and-deploy/health-checks).
+
 ## Smoke tests
 
 Check that Seq accepts a log event (CLEF format,
