@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Csms.Ocpp\Csms.Ocpp.csproj" />
+    <ProjectReference Include="..\Csms.Domain\Csms.Domain.csproj" />
+    <ProjectReference Include="..\Csms.Infrastructure\Csms.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>
