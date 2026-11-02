@@ -117,6 +117,8 @@ Before a non-trivial change, show a short plan and wait for approval.
   `logger.LogInformation("Boot from {ChargePointId}", id)`
 - Every OCPP message is logged with ChargePointId, Action and MessageId as properties.
 - Correlation ID flows through logs and traces.
+- Never log the `Authorization` header, credentials, or request/response bodies (stations use
+  Basic Auth from M1). Log the fields you need as named properties instead.
 - New code paths get an OpenTelemetry span where it helps an investigation.
 - Metrics use the `csms.` prefix, e.g. `csms.stations.connected`, `csms.ocpp.handler.duration`.
 - Document new diagnostic commands in docs/DIAGNOSTICS.md.
